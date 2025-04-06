@@ -30,4 +30,10 @@ app.post("/sign-up", async (req, res, next) => {
     }
 })
 
+passport.use(
+    new LocalStrategy( async (username, password, done) => {
+        
+    })
+)
+
 app.listen(3000, () => console.log("app listening on port 3000!"));
