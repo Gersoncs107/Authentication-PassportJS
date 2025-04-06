@@ -41,10 +41,13 @@ passport.use(
             if(user.password !== password){
                 done(null, false, {message: "Incorrect password"})
             }
+            return done(null, user)
         } catch(err){
             return done(err);
         }
     })
 )
+
+
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
