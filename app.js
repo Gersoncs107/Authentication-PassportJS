@@ -48,6 +48,9 @@ passport.use(
     })
 )
 
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
 
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
