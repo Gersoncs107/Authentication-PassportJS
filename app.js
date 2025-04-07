@@ -22,6 +22,15 @@ app.get("/", (req, res) => {
     });
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
 
+app.get("/log-uot", (req, res) => {
+    req.logout(err => {
+        if(err){
+            return next(err);
+        }
+        res.redirect("/");
+    })
+})
+
 app.post("/sign-up", async (req, res, next) => {
     try{
         await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [req.body.username, req.body.password]);
