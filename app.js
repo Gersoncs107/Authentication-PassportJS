@@ -6,11 +6,11 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
 const pool = new Pool({
-    user: "postgres",       // Replace with your PostgreSQL username
-    host: "localhost",                // Replace with your database host (e.g., localhost)
-    database: "postgres",   // Replace with your database name
-    password: "32710019numB$", // Replace with your PostgreSQL password
-    port: 5432                        // Replace with your database port (default is 5432)
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT || 5432
 });
 
 const app = express();
