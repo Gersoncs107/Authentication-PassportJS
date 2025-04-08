@@ -37,10 +37,18 @@ app.get("/log-uot", (req, res) => {
 })
 
 app.post("/sign-up", async (req, res, next) => {
-    try{
+    try {
+        // Check if the username already exists
+        const { rows } = await pool.query("SELECT * FROM users WHERE username = $1", [req.body.username]);
+        if (rows.length > 0) {
+            // Username already exists
+            return res.status(400).send("Username already exists. Please choose a different one.");
+        }
+
+        // Insert the new user
         await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [req.body.username, req.body.password]);
         res.redirect("/");
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return next(err);
     }
