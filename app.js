@@ -85,4 +85,17 @@ passport.deserializeUser( async (id, done) => {
         done(err);
     }
 })
+
 app.listen(3000, () => console.log("app listening on port 3000!"));
+
+const createTableQuery = `
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+`;
+
+pool.query(createTableQuery)
+    .then(() => console.log("Table created successfully"))
+    .catch(err => console.error("Error creating table", err));
