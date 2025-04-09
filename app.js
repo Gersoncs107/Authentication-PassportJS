@@ -1,5 +1,5 @@
 require("dotenv").config();
-require("bcryptjs")
+const bcrypt = require("bcryptjs")
 const path = require("node:path");
 const {Pool} = require("pg");
 const express = require("express");
@@ -109,7 +109,7 @@ passport.deserializeUser( async (id, done) => {
 app.listen(3000, () => console.log("app listening on port 3000!"));
 
 const createTableQuery = `
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
@@ -117,5 +117,5 @@ CREATE TABLE users (
 `;
 
 pool.query(createTableQuery)
-    .then(() => console.log("Table created successfully"))
+    .then(() => console.log("Table created successfully (if it didn't already exist)"))
     .catch(err => console.error("Error creating table", err));
