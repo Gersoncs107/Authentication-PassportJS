@@ -43,21 +43,29 @@ app.get("/log-in", (req, res) => {
 
 app.post("/sign-up", async (req, res, next) => {
     try {
+        console.log("Sign-up request received:", req.body);
+
         // Check if the username already exists
         const { rows } = await pool.query("SELECT * FROM users WHERE username = $1", [req.body.username]);
         if (rows.length > 0) {
-            // Username already exists
+            console.log("Username already exists:", req.body.username);
             return res.status(400).send("Username already exists. Please choose a different one.");
         }
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        console.log("Password hashed successfully.");
 
         // Insert the new user
-        await pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [req.body.username, hashedPassword]);
+        const result = await pool.query(
+            "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *",
+            [req.body.username, hashedPassword]
+        );
+        console.log("User inserted into database:", result.rows[0]);
+
         res.redirect("/");
     } catch (error) {
-        console.error(error);
+        console.error("Error during sign-up:", error);
         next(error);
     }
 });
