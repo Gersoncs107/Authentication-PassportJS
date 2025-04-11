@@ -70,6 +70,14 @@ app.post(
     })
 )
 
+app.post(
+    "/log-in",
+    passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/log-in"
+    })
+);
+
 passport.use(
     new LocalStrategy( async (username, password, done) => {
         try{
